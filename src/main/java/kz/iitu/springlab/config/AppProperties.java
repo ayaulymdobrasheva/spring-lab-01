@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -23,7 +24,10 @@ public record AppProperties(
         String group,
 
         @Valid
-        Mail mail
+        Mail mail,
+
+        @Valid
+        RateLimit rateLimit
 
 ) {
 
@@ -43,6 +47,19 @@ public record AppProperties(
 
             @DefaultValue("true")
             boolean enabled
+    ) {
+    }
+
+    public record RateLimit(
+
+            @Positive
+            @DefaultValue("60")
+            int requestsPerMinute,
+
+            @Min(1)
+            @Max(100)
+            @DefaultValue("10")
+            int burst
     ) {
     }
 }

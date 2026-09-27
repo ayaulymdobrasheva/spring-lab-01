@@ -50,6 +50,15 @@ public class Lab3Controller {
                 Arrays.asList(environment.getActiveProfiles())
         );
         result.put("banner", banner.describe());
+        result.put(
+                "requestsPerMinute",
+                props.rateLimit().requestsPerMinute()
+        );
+
+        result.put(
+                "burst",
+                props.rateLimit().burst()
+        );
 
         return result;
     }

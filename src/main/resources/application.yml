@@ -13,6 +13,9 @@ app:
     retry-count: 3
     timeout: 5s
     enabled: true
+  rate-limit:
+    requests-per-minute: 60
+    burst: 10
 
 logging:
   level:
