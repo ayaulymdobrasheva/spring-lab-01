@@ -1,5 +1,5 @@
 package kz.iitu.springlab.web;
-
+import kz.iitu.springlab.catalog.BookStats;
 import kz.iitu.springlab.catalog.Book;
 import kz.iitu.springlab.catalog.BookService;
 
@@ -90,5 +90,9 @@ public class BookRestController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/stats")
+    public ResponseEntity<BookStats> stats() {
+        return ResponseEntity.ok(service.getStats());
     }
 }
