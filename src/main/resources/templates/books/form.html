@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{book.new}">New book</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<nav>
+    <a th:href="@{/books/new(lang='en')}">English</a>
+    |
+    <a th:href="@{/books/new(lang='ru')}">Русский</a>
+</nav>
+
+<h1 th:text="#{book.new}">New book</h1>
+
+<form th:action="@{/books}"
+      th:object="${form}"
+      method="post"
+      novalidate>
+
+    <div class="alert" th:if="${#fields.hasAnyErrors()}">
+        <ul>
+            <li th:each="error : ${#fields.allErrors()}"
+                th:text="${error}"></li>
+        </ul>
+    </div>
+
+    <div>
+        <label for="title" th:text="#{book.title}">Title</label>
+        <input type="text"
+               th:field="*{title}"
+               th:errorclass="is-invalid">
+        <span class="error"
+              th:if="${#fields.hasErrors('title')}"
+              th:errors="*{title}"></span>
+    </div>
+
+    <div>
+        <label for="author" th:text="#{book.author}">Author</label>
+        <input type="text"
+               th:field="*{author}"
+               th:errorclass="is-invalid">
+        <span class="error"
+              th:if="${#fields.hasErrors('author')}"
+              th:errors="*{author}"></span>
+    </div>
+
+    <div>
+        <label for="year" th:text="#{book.year}">Year</label>
+        <input type="number"
+               th:field="*{year}"
+               th:errorclass="is-invalid">
+        <span class="error"
+              th:if="${#fields.hasErrors('year')}"
+              th:errors="*{year}"></span>
+    </div>
+
+    <div>
+        <label for="genre" th:text="#{book.genre}">Genre</label>
+        <select th:field="*{genre}"
+                th:errorclass="is-invalid">
+            <option value=""
+                    th:text="#{book.genre.choose}">
+                Choose a genre
+            </option>
+            <option th:each="g : ${genres}"
+                    th:value="${g}"
+                    th:text="#{${'genre.' + g.name()}}">
+            </option>
+        </select>
+        <span class="error"
+              th:if="${#fields.hasErrors('genre')}"
+              th:errors="*{genre}"></span>
+    </div>
+
+    <div>
+        <label for="coverUrl"
+               th:text="#{book.coverUrl}">Cover image URL</label>
+        <input type="text"
+               th:field="*{coverUrl}"
+               th:errorclass="is-invalid">
+        <span class="error"
+              th:if="${#fields.hasErrors('coverUrl')}"
+              th:errors="*{coverUrl}"></span>
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" th:field="*{available}">
+            <span th:text="#{book.available}">Available</span>
+        </label>
+    </div>
+
+    <button type="submit" th:text="#{form.submit}">Save</button>
+    <a th:href="@{/books}"
+       th:text="#{book.back}">Back to catalogue</a>
+
+</form>
+
+</body>
+</html>

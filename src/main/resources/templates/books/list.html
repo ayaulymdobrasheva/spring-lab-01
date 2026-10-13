@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{book.catalogue}">Catalogue</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<h1 th:text="#{book.catalogue}">Catalogue</h1>
+
+<div class="alert"
+     th:if="${message != null}"
+     th:text="${message}"></div>
+
+<a th:href="@{/books/new}" th:text="#{book.new}">New book</a>
+
+<form th:action="@{/books}" method="get">
+  <label for="author" th:text="#{book.author}">Author</label>
+  <input id="author"
+         name="author"
+         type="text"
+         th:value="${author}">
+  <button type="submit" th:text="#{book.search}">Search</button>
+</form>
+
+<p th:if="${#lists.isEmpty(books)}"
+   th:text="#{book.empty}">No books found</p>
+
+<table th:unless="${#lists.isEmpty(books)}">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th th:text="#{book.title}">Title</th>
+    <th th:text="#{book.author}">Author</th>
+    <th th:text="#{book.year}">Year</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="book : ${books}">
+    <td th:text="${book.id()}"></td>
+    <td>
+      <a th:href="@{/books/{id}(id=${book.id()})}"
+         th:text="${book.title()}"></a>
+    </td>
+    <td th:text="${book.author()}"></td>
+    <td th:text="${book.year()}"></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
