@@ -33,7 +33,10 @@ public class BookService {
     public Optional<Book> findById(long id) {
         return repository.findById(id);
     }
-
+    public Book getById(long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+    }
     public Book create(Book book) {
         return repository.save(
                 new Book(

@@ -36,17 +36,9 @@ public class BookRestController {
 
     // GET /api/books/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<Book> find(
-            @PathVariable long id
-    ) {
-
-        return service.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(
-                        () -> ResponseEntity.notFound().build()
-                );
+    public ResponseEntity<Book> find(@PathVariable long id) {
+        return ResponseEntity.ok(service.getById(id));
     }
-
 
     // POST /api/books
     @PostMapping

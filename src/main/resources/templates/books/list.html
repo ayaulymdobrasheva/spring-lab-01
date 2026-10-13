@@ -1,60 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${title}">Catalogue</title>
-    <link rel="stylesheet" th:href="@{/css/app.css}">
+  <meta charset="UTF-8">
+  <title th:text="#{book.catalogue}">Catalogue</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
-
 <body>
 
-<h1 th:text="${title}">Catalogue</h1>
-<p th:if="${message}"
-   class="flash"
-   th:text="${message}">
-</p>
+<h1 th:text="#{book.catalogue}">Catalogue</h1>
 
-<h2>Add new book</h2>
+<div class="alert"
+     th:if="${message != null}"
+     th:text="${message}"></div>
 
-<form method="post" action="/books">
+<a th:href="@{/books/new}" th:text="#{book.new}">New book</a>
 
-    <input type="text"
-           name="title"
-           placeholder="Title"
-           required>
-
-    <input type="text"
-           name="author"
-           placeholder="Author"
-           required>
-
-    <input type="number"
-           name="year"
-           placeholder="Year"
-           required>
-
-    <button type="submit">
-        Add
-    </button>
-
+<form th:action="@{/books}" method="get">
+  <label for="author" th:text="#{book.author}">Author</label>
+  <input id="author"
+         name="author"
+         type="text"
+         th:value="${author}">
+  <button type="submit" th:text="#{book.search}">Search</button>
 </form>
 
-<p th:if="${message}" class="flash" th:text="${message}"></p>
+<p th:if="${#lists.isEmpty(books)}"
+   th:text="#{book.empty}">No books found</p>
 
-<table>
-    <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Year</th>
-    </tr>
-
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.title}">Title</td>
-        <td th:text="${book.author}">Author</td>
-        <td th:text="${book.year}">2020</td>
-    </tr>
+<table th:unless="${#lists.isEmpty(books)}">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th th:text="#{book.title}">Title</th>
+    <th th:text="#{book.author}">Author</th>
+    <th th:text="#{book.year}">Year</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="book : ${books}">
+    <td th:text="${book.id()}"></td>
+    <td>
+      <a th:href="@{/books/{id}(id=${book.id()})}"
+         th:text="${book.title()}"></a>
+    </td>
+    <td th:text="${book.author()}"></td>
+    <td th:text="${book.year()}"></td>
+  </tr>
+  </tbody>
 </table>
 
 </body>

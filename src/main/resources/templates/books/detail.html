@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title()}">Book</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<h1 th:text="${book.title()}">Book title</h1>
+
+<p>
+    <strong th:text="#{book.author}">Author</strong>:
+    <span th:text="${book.author()}"></span>
+</p>
+
+<p>
+    <strong th:text="#{book.year}">Year</strong>:
+    <span th:text="${book.year()}"></span>
+</p>
+
+<a th:href="@{/books}" th:text="#{book.back}">
+    Back to catalogue
+</a>
+
+</body>
+</html>
