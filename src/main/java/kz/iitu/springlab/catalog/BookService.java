@@ -1,3 +1,4 @@
+
 package kz.iitu.springlab.catalog;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ public class BookService {
     }
 
     public List<Book> findAll(String author) {
-
         List<Book> books = repository.findAll();
 
         if (author == null || author.isBlank()) {
@@ -25,40 +25,58 @@ public class BookService {
         String search = author.toLowerCase();
 
         return books.stream()
-                .filter(book ->
-                        book.author().toLowerCase().contains(search))
+                .filter(book -> book.author().toLowerCase().contains(search))
                 .toList();
     }
 
     public Optional<Book> findById(long id) {
         return repository.findById(id);
     }
+
     public Book getById(long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
+
     public Book create(Book book) {
+
+        boolean exists = repository.findAll().stream()
+                .anyMatch(existing ->
+                        existing.title().equalsIgnoreCase(book.title())
+                );
+
+        if (exists) {
+            throw new DuplicateTitleException(book.title());
+        }
+
         return repository.save(
                 new Book(
                         null,
                         book.title(),
                         book.author(),
-                        book.year()
+                        book.year(),
+                        book.genre(),
+                        book.createdAt()
                 )
         );
     }
 
     public Optional<Book> replace(long id, Book book) {
+        Optional<Book> existing = repository.findById(id);
 
-        if (repository.findById(id).isEmpty()) {
+        if (existing.isEmpty()) {
             return Optional.empty();
         }
+
+        Book current = existing.get();
 
         Book updated = new Book(
                 id,
                 book.title(),
                 book.author(),
-                book.year()
+                book.year(),
+                book.genre(),
+                current.createdAt()
         );
 
         return Optional.of(repository.save(updated));
@@ -67,6 +85,7 @@ public class BookService {
     public boolean delete(long id) {
         return repository.deleteById(id);
     }
+
     public BookStats getStats() {
         List<Book> books = repository.findAll();
 
