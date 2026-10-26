@@ -1,5 +1,8 @@
 
 package kz.iitu.springlab.web;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import kz.iitu.springlab.web.dto.OnCreate;
 import kz.iitu.springlab.web.dto.OnUpdate;
 import jakarta.validation.groups.Default;
@@ -30,16 +33,12 @@ public class BookRestController {
     }
 
     @GetMapping
-    public List<BookResponse> list(
+    public Page<BookResponse> list(
             @RequestParam(required = false) String author,
-            @RequestParam(defaultValue = "10") int limit
+            @PageableDefault(size = 5, sort = "title") Pageable pageable
     ) {
-        return mapper.toResponseList(
-                service.findAll(author)
-                        .stream()
-                        .limit(Math.max(0, limit))
-                        .toList()
-        );
+        return service.findAll(author, pageable)
+                .map(mapper::toResponse);
     }
 
     @GetMapping("/{id}")
