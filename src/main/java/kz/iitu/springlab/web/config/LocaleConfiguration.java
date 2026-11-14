@@ -1,3 +1,4 @@
+
 package kz.iitu.springlab.web.config;
 
 import java.util.Locale;
@@ -22,8 +23,7 @@ public class LocaleConfiguration implements WebMvcConfigurer {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor interceptor =
-                new LocaleChangeInterceptor();
+        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
         return interceptor;
     }
