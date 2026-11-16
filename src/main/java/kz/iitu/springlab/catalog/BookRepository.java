@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
-
+import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
-
+    List<Book> findByOwner_Username(String username);
     List<Book> findByGenre(Genre genre);
 
     List<Book> findByTitleContainingIgnoreCase(String title);
@@ -59,4 +59,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     // LAB 8: N+1 solution
     @Query("SELECT b FROM Book b JOIN FETCH b.authorEntity")
     List<Book> findAllWithAuthor();
+    Optional<Book> findByIdAndOwner_Username(
+            Long id,
+            String username
+    );
 }

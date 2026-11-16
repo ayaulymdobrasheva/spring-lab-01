@@ -1,6 +1,7 @@
 package kz.iitu.springlab.catalog;
 
 import jakarta.persistence.*;
+import kz.iitu.springlab.repository.AppUser;
 import kz.iitu.springlab.web.Genre;
 
 import java.time.Instant;
@@ -17,6 +18,11 @@ public class Book {
 
     @Column(nullable = false)
     private String title;
+
+    // LAB 10, VARIANT 5: Book owner
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private AppUser owner;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
@@ -41,12 +47,14 @@ public class Book {
     private Set<Tag> tags = new HashSet<>();
 
     private boolean archived = false;
+
     @Version
     private long version;
+
     protected Book() {
     }
 
-    // Конструктор для предыдущих лабораторных
+    // Constructor for previous labs
     public Book(Long id, String title, String author,
                 int year, Genre genre, Instant createdAt) {
         this.id = id;
@@ -57,7 +65,7 @@ public class Book {
         this.createdAt = createdAt;
     }
 
-    // Конструктор для лабораторной №8
+    // Constructor for Lab 8
     public Book(String title, Genre genre, int year) {
         this.title = title;
         this.genre = genre;
@@ -65,6 +73,20 @@ public class Book {
         this.createdAt = Instant.now();
     }
 
+    // LAB 10: Owner getter and setter
+    public AppUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(AppUser owner) {
+        this.owner = owner;
+    }
+
+    public Long getOwnerId() {
+        return owner != null ? owner.getId() : null;
+    }
+
+    // Author methods
     public void setAuthor(Author author) {
         this.authorEntity = author;
 
@@ -81,6 +103,7 @@ public class Book {
         tags.add(tag);
     }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -92,6 +115,7 @@ public class Book {
     public int getYear() {
         return year;
     }
+
     public void setYear(int year) {
         this.year = year;
     }
@@ -103,6 +127,7 @@ public class Book {
     public long getVersion() {
         return version;
     }
+
     public Genre getGenre() {
         return genre;
     }
@@ -111,8 +136,7 @@ public class Book {
         return tags;
     }
 
-    // Совместимость с прежним record Book
-
+    // Compatibility with previous record Book
     public Long id() {
         return id;
     }
@@ -136,5 +160,4 @@ public class Book {
     public Instant createdAt() {
         return createdAt;
     }
-
 }

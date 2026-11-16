@@ -1,5 +1,5 @@
 package kz.iitu.springlab.catalog;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -7,17 +7,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import kz.iitu.springlab.repository.AppUser;
+import kz.iitu.springlab.repository.AppUserRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 public class BookService {
 
     private final BookRepository repository;
     private final AuthorRepository authorRepository;
-
-    public BookService(BookRepository repository,
-                       AuthorRepository authorRepository) {
+    private final AppUserRepository userRepository;public BookService(
+            BookRepository repository,
+            AuthorRepository authorRepository,
+            AppUserRepository userRepository
+    ) {
         this.repository = repository;
         this.authorRepository = authorRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +57,7 @@ public class BookService {
                 author, pageable
         );
     }
-
+    @PreAuthorize("@bookService.isOwnerOrAdmin(#id)")
     @Transactional(readOnly = true)
     public Optional<Book> findById(long id) {
         return repository.findById(id);
@@ -60,7 +68,24 @@ public class BookService {
         return repository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
+    private AppUser getCurrentUser() {
 
+        Authentication authentication =
+                SecurityContextHolder.getContext()
+                        .getAuthentication();
+
+        if (authentication == null ||
+                !authentication.isAuthenticated()) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Login required");
+        }
+
+        return userRepository
+                .findByUsername(authentication.getName())
+                .orElseThrow(() ->
+                        new org.springframework.security.access.AccessDeniedException(
+                                "User not found"));
+    }
     @Transactional
     public Book create(Book book) {
 
@@ -82,7 +107,7 @@ public class BookService {
         );
 
         assignAuthor(newBook, book.author());
-
+        newBook.setOwner(getCurrentUser());
         return repository.save(newBook);
     }
 
@@ -105,6 +130,7 @@ public class BookService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean delete(long id) {
 
         if (!repository.existsById(id)) {
@@ -158,5 +184,32 @@ public class BookService {
                 );
 
         book.setAuthor(author);
+    }
+    public boolean isOwnerOrAdmin(long bookId) {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext()
+                        .getAuthentication();
+
+        if (authentication == null ||
+                !authentication.isAuthenticated()) {
+            return false;
+        }
+
+        boolean isAdmin = authentication.getAuthorities()
+                .stream()
+                .anyMatch(a ->
+                        a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isAdmin) {
+            return true;
+        }
+
+        return repository.findById(bookId)
+                .map(book ->
+                        book.getOwner() != null &&
+                                book.getOwner().getUsername()
+                                        .equals(authentication.getName()))
+                .orElse(false);
     }
 }

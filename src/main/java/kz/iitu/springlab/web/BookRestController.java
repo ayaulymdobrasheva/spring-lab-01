@@ -7,7 +7,6 @@ import kz.iitu.springlab.web.dto.OnCreate;
 import kz.iitu.springlab.web.dto.OnUpdate;
 import jakarta.validation.groups.Default;
 import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 import kz.iitu.springlab.catalog.Book;
 import kz.iitu.springlab.catalog.BookService;
 import kz.iitu.springlab.catalog.BookStats;
@@ -18,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")

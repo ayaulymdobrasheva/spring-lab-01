@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.context.MessageSource;
 import java.util.Locale;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 @RequestMapping("/books")
 public class BookPageController {
@@ -88,5 +90,41 @@ public class BookPageController {
     public String detail(@PathVariable long id, Model model) {
         model.addAttribute("book", service.getById(id));
         return "books/detail";
+    }
+    @GetMapping("/{id}/edit")
+    @PreAuthorize("@bookService.isOwnerOrAdmin(#p0)")
+    public String editForm(
+            @PathVariable long id,
+            Model model
+    ) {
+        Book book = service.getById(id);
+
+        model.addAttribute("book", book);
+
+        return "books/edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    @PreAuthorize("@bookService.isOwnerOrAdmin(#p0)")
+    public String updateBook(
+            @PathVariable long id,
+            @RequestParam String title,
+            @RequestParam String author,
+            @RequestParam int year
+    ) {
+        Book current = service.getById(id);
+
+        Book updated = new Book(
+                id,
+                title,
+                author,
+                year,
+                current.genre(),
+                current.createdAt()
+        );
+
+        service.replace(id, updated);
+
+        return "redirect:/books/" + id;
     }
 }

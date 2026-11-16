@@ -1,0 +1,21 @@
+ pom.xml                                            |  17 [32m+[m
+ .../java/kz/iitu/springlab/account/Account.java    |  76 [32m+++++[m
+ .../iitu/springlab/account/AccountRepository.java  |   7 [32m+[m
+ .../kz/iitu/springlab/account/AccountService.java  |  86 [32m+++++[m
+ .../java/kz/iitu/springlab/account/AuditLog.java   |  39 [32m+++[m
+ .../iitu/springlab/account/AuditLogRepository.java |  12 [32m+[m
+ .../kz/iitu/springlab/account/AuditService.java    |  25 [32m++[m
+ .../springlab/account/IsolationDemoService.java    |  72 [32m++++[m
+ .../springlab/account/PropagationDemoService.java  |  26 [32m++[m
+ .../springlab/web/config/LocaleConfiguration.java  |   6 [32m+[m[31m-[m
+ src/main/resources/application.properties          |  19 [32m+[m[31m-[m
+ .../resources/db/migration/V1__create_accounts.sql |  11 [32m+[m
+ src/main/resources/db/migration/V2__add_status.sql |   3 [32m+[m
+ .../db/migration/V3__create_audit_logs.sql         |   5 [32m+[m
+ src/main/resources/static/css/app.css              | 369 [32m++++++++++++++++++[m[31m---[m
+ src/main/resources/templates/books/list.html       |  71 [32m+++[m[31m-[m
+ .../iitu/springlab/account/AccountServiceTest.java | 167 [32m++++++++++[m
+ .../kz/iitu/springlab/account/IsolationTest.java   |  79 [32m+++++[m
+ .../springlab/account/OptimisticLockingTest.java   |  64 [32m++++[m
+ .../kz/iitu/springlab/account/PropagationTest.java |  46 [32m+++[m
+ 20 files changed, 1141 insertions(+), 59 deletions(-)
