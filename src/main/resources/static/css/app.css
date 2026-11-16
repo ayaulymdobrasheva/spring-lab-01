@@ -1,0 +1,397 @@
+
+    /* ===== BLUE BOOK LIBRARY DESIGN ===== */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: #a8d4ff;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #17417c;
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 35px 25px;
+
+    /* Sky and cloud inspired background */
+    background:
+            radial-gradient(ellipse at 15% 15%,
+            rgba(255,255,255,.95) 0 4%,
+            transparent 20%),
+            radial-gradient(ellipse at 85% 25%,
+            rgba(255,255,255,.8) 0 5%,
+            transparent 22%),
+            radial-gradient(ellipse at 75% 80%,
+            rgba(255,255,255,.65) 0 5%,
+            transparent 24%),
+            linear-gradient(135deg,
+            #60a5fa 0%,
+            #b9ddff 45%,
+            #dff3ff 75%,
+            #91caff 100%);
+
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* ===== DECORATIVE BACKGROUND DETAILS ===== */
+body::before {
+    content: "✦     ♧     ✧";
+    position: fixed;
+    top: 35px;
+    left: 25px;
+    color: rgba(255,255,255,.8);
+    font-size: 32px;
+    letter-spacing: 18px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::after {
+    content: "♡     ✧     ♡";
+    position: fixed;
+    right: 20px;
+    bottom: 35px;
+    color: rgba(255,255,255,.8);
+    font-size: 35px;
+    letter-spacing: 12px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===== MAIN TITLE ===== */
+h1 {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #174ea6;
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin: 10px 0 35px;
+    text-shadow: 0 3px 15px rgba(255,255,255,.65);
+}
+
+/* ===== FORM CARD ===== */
+form {
+    position: relative;
+    z-index: 1;
+    background: rgba(255,255,255,.88);
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,.95);
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(25,83,160,.18);
+    margin-bottom: 28px;
+    backdrop-filter: blur(12px);
+}
+
+form > div {
+    margin-bottom: 20px;
+}
+
+/* ===== LABELS ===== */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #17417c;
+}
+
+/* ===== INPUTS ===== */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #24466e;
+    background: #f8fbff;
+    border: 1.5px solid #a9ceff;
+    border-radius: 12px;
+    transition: .25s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #3478ee;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(59,130,246,.15);
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #3478ee;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+/* ===== VALIDATION ===== */
+input.is-invalid,
+select.is-invalid {
+    border: 2px solid #ef4444;
+}
+
+.error {
+    display: block;
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.alert {
+    background: #fff0f0;
+    color: #a51d35;
+    border: 1px solid #ffcaca;
+    border-left: 5px solid #ef4444;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.alert ul {
+    margin: 0;
+    padding-left: 22px;
+}
+
+/* ===== BUTTONS ===== */
+button {
+    padding: 13px 27px;
+    color: #fff;
+    background: linear-gradient(135deg,#438cff,#2463df);
+    border: none;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(37,99,235,.22);
+    transition: .25s ease;
+}
+
+button:hover {
+    background: linear-gradient(135deg,#286fe8,#1749b5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37,99,235,.3);
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #1741a0;
+    text-decoration: underline;
+}
+
+form > a {
+    display: inline-block;
+    margin-left: 14px;
+}
+
+/* ===== TABLE CARD ===== */
+table {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-top: 25px;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+
+    background: rgba(255,255,255,.93);
+    border: 1px solid rgba(255,255,255,.95);
+    border-radius: 18px;
+    box-shadow: 0 14px 35px rgba(25,83,160,.17);
+}
+
+/* Center all column headings and content */
+th,
+td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 12px;
+    border-bottom: 1px solid #dceaff;
+    font-size: 16px;
+}
+
+/* Blue header */
+th {
+    background: linear-gradient(135deg,#c5e0ff,#d9eaff);
+    color: #174ea6;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+/* Alternating rows */
+tbody tr:nth-child(even) {
+    background: #edf6ff;
+}
+
+tbody tr:nth-child(odd) {
+    background: rgba(255,255,255,.85);
+}
+
+tbody tr:hover {
+    background: #dceeff;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    h1 {
+        font-size: 31px;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    th, td {
+        padding: 11px 8px;
+        font-size: 14px;
+    }
+}
+       /* ===== COMPACT SCREEN DESIGN ===== */
+
+   body {
+       max-width: 1000px;
+       padding: 22px 20px;
+       font-size: 14px;
+   }
+
+/* Smaller title */
+h1 {
+    font-size: 32px;
+    margin: 5px 0 22px;
+}
+
+/* Smaller form */
+form {
+    padding: 22px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+form > div {
+    margin-bottom: 13px;
+}
+
+/* Smaller labels */
+label {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+/* Smaller input fields */
+input[type="text"],
+input[type="number"],
+select {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 9px;
+}
+
+/* Smaller buttons */
+button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+/* Compact table */
+table {
+    margin-top: 18px;
+    border-radius: 13px;
+}
+
+th,
+td {
+    padding: 11px 9px;
+    font-size: 14px;
+}
+
+th {
+    font-size: 15px;
+}
+
+/* Smaller decorative details */
+body::before {
+    font-size: 24px;
+    letter-spacing: 10px;
+}
+
+body::after {
+    font-size: 25px;
+    letter-spacing: 8px;
+}
+
+/* Small screens */
+@media (max-width: 700px) {
+    body {
+        padding: 16px 10px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    form {
+        padding: 16px;
+    }
+
+    th,
+    td {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+
+    .language-switcher {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin: 0 auto 15px;
+        max-width: 900px;
+        font-weight: 600;
+    }
+
+    .language-switcher a {
+        display: inline-block;
+        padding: 7px 14px;
+        border: 1px solid #8bbce8;
+        border-radius: 8px;
+        color: #245b91;
+        background: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .language-switcher a:hover,
+    .language-switcher a.active {
+        background: #397fbd;
+        color: white;
+    }
+
+}
